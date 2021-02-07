@@ -1,3 +1,6 @@
+    //python server terminal line: python -m SimpleHTTPServer 8000
+    //browser: http://localhost:8000
+    // ctr C to end server
     
     document.getElementById("paragraph").style.color = "red";
     
