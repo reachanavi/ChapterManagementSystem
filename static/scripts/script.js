@@ -49,6 +49,11 @@ class Chapter {
     {
     return this.status;
     }
+
+    updateStatus(newStatus)
+    {
+        this.status = newStatus;
+    }
 }
 
 //Global variables
@@ -187,10 +192,44 @@ function appendPre(message) {
     // appendPre("hello");
     // numSheetApps = findNumSheetApps();
     numSheetApps = await findNumSheetApps();
-    await updateLocalStorage(numSheetApps); 
+    await updateLocalStorage(numSheetApps);
     // appendPre(teamMembers[2].getChapterList()[0].getCity());
     // document.getElementById("test-p").innerHTML = teamMembers[2].getChapterList()[0].getCity();
-    
+
+    //update tables:
+    for(i = 0; i<6; i++)
+    {
+        let currentMember = teamMembers[i];
+        for(c = 0; c< currentMember.getChapterList().length; c++)
+        {
+            if(currentMember.getChapterList()[c] != null)
+            {
+                let currentChapter = currentMember.getChapterList()[c];
+                let idString = "location";
+                idString = idString + (i + 1);
+                idString += c + 1;
+                document.getElementById(idString).innerHTML = currentChapter.getCity();
+                let statusStr = "";
+                if(currentChapter.getStatus() == 0)
+                {
+                    statusStr = "Applied";
+                    
+                }else if(currentChapter.getStatus() == 1)
+                {
+                    statusStr = "Approved";
+                }else if(currentChapter.getStatus() == 2){
+                    statusStr = "Started";
+                }else{
+                    statusStr = "Error";
+                }
+                idString = "status" + (i + 1);
+                idString += c + 1;
+                document.getElementById(idString).innerHTML = statusStr;
+                
+                document.getElementById("test-p").style.color = "red";
+            }
+        }
+    }
     
     /*updateTables();
     // gapi.client.sheets.spreadsheets.values.get({
