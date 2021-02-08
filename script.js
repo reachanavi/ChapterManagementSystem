@@ -1,6 +1,26 @@
     //python server terminal line: python -m SimpleHTTPServer 8000
     //browser: http://localhost:8000
     // ctr C to end server
+
+    //CLASSES:
+    class TeamMember {
+        constructor(name, email)
+        {
+            this.name = name;
+            this.email = email;
+            this.chapters = new Array();
+        }
+
+        getChapterList()
+        {
+            return this.chapters;
+        }
+
+        getName()
+        {
+            return this.name;
+        }
+    }
     
     //GLobal variables
 
@@ -17,6 +37,23 @@
 
     //keep track of how many total applications are on the spreadsheet
     var numSheetApps = 0;
+
+    //check whether team members have been created
+    if(window.localStorage.getItem("teamMembersCreated") == null)
+    {
+        var team = new Array();
+        team.push(new TeamMember("Member Name 1", "member1@email.com"));
+        team.push(new TeamMember("Member Name 2", "member2@email.com"));
+        team.push(new TeamMember("Member Name 3", "member3@email.com"));
+        team.push(new TeamMember("Member Name 4", "member4@email.com"));
+        team.push(new TeamMember("Member Name 5", "member5@email.com"));
+        team.push(new TeamMember("Member Name 6", "member6@email.com"));
+        window.localStorage.setItem('team', JSON.stringify(team));
+        //test part:
+        var teamMembers = JSON.parse(window.localStorage.getItem('team'));
+        
+
+    }
     
     
     // Client ID and API key from the Developer Console

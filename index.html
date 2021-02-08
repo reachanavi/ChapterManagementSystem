@@ -8,6 +8,7 @@
   <body>
     
     <!--Add buttons to initiate auth sequence and sign out-->
+    <p id = "test-p">Initial Content</p>
     <button id="authorize_button" style="display: none;">Authorize</button>
     <button id="signout_button" style="display: none;">Sign Out</button>
     <button id = "testButton" onClick = "testFunction()">Click Here!</button>
@@ -123,8 +124,59 @@
     //python server terminal line: python -m SimpleHTTPServer 8000
     //browser: http://localhost:8000
     // ctr C to end server
+    //to do: update syncedChapters global variable and in local storage after syncing
+
+    //CLASSES:
+    class TeamMember {
+        constructor(name, email, idNumber)
+        {
+            this.name = name;
+            this.email = email;
+            this.idNumber = idNumber
+            this.chapters = new Array();
+        }
+
+        getChapterList()
+        {
+            return this.chapters;
+        }
+
+        getName()
+        {
+            return this.name;
+        }
+
+        addChapter(chapter)
+        {
+          this.chapters.push(chapter);
+        }
+    }
+
+    class Chapter {
+      constructor(leaderName, leaderEmail, school, city, description, support)
+      {
+        this.leaderName = leaderName;
+        this.leaderEmail = leaderEmail;
+        this.school = school;
+        this.city = city;
+        this.description = description;
+        this.support = support;
+        this.status = 0;
+        // this.teamMember = teamMember;
+      }
+      getCity()
+      {
+        return this.city;
+      }
+      getStatus()
+      {
+        return this.status;
+      }
+    }
 
     //GLobal variables
+    //team members array
+    var teamMembers = [null, null, null, null, null, null];
 
     //Keep track of how many chapters have already been synced
     var numSynced = 0;
@@ -138,7 +190,31 @@
     }
 
     //keep track of how many total applications are on the spreadsheet
-    var numSheetApps = 0;
+    var numSheetApps;
+
+    //check whether team members have been created
+    if(window.localStorage.getItem("teamMembersCreated") == null)
+    {
+        // testMember = new TeamMember("Test Member Name", "test@email.com");  
+        // testChapter = new Chapter("leader name", "email@email", "school name", "sample city", 
+        // "sample description", "sample support");
+        // testMember.addChapter(testChapter);
+        var team = new Array();
+        team.push(new TeamMember("Member Name 1", "member1@email.com", 1));
+        team.push(new TeamMember("Member Name 2", "member2@email.com", 2));
+        team.push(new TeamMember("Member Name 3", "member3@email.com", 3));
+        team.push(new TeamMember("Member Name 4", "member4@email.com", 4));
+        team.push(new TeamMember("Member Name 5", "member5@email.com", 5));
+        team.push(new TeamMember("Member Name 6", "member6@email.com", 6));
+        window.localStorage.setItem('team', JSON.stringify(team));
+        window.localStorage.setItem("teamMembersCreated", "true");
+
+        // var currentMembers = JSON.parse(window.localStorage.getItem("team"));
+        // document.getElementById("test-p").style.color = "red";
+        // document.getElementById("test-p").innerHTML = currentMembers[6].chapters[currentMembers[6].chapters.length - 1].city;
+        
+
+    }
 
 
     // Client ID and API key from the Developer Console
@@ -230,42 +306,110 @@
      * Print the names and majors of students in a sample spreadsheet:
      * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
      */
-    function sync() {
-        findNumSheetApps();
-        gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1-sVr5PKZpI0DdJhuxc32CkSWxhSYtvW55okIFgsIaW0',
-            range: 'Applications!A2:H6',
-        }).then(function(response) {
-            var range = response.result;
-            if (range.values.length > 0) {
-            document.getElementById("paragraph").innerHTML = "heyyy";
-            //appendPre('Name, Major:');
-            for (i = 0; i < range.values.length; i++) {
-                var row = range.values[i];
-                // Print columns A and E, which correspond to indices 0 and 4.
-                //appendPre(row[0] + ', ' + row[4]);
-            }
-            } else {
-            appendPre('No data found.');
-            }
-        }, function(response) {
-            appendPre('Error: ' + response.result.error.message);
-        });
+     async function sync() {
+        // appendPre("hello");
+        // numSheetApps = findNumSheetApps();
+        numSheetApps = await findNumSheetApps();
+        await updateLocalStorage(numSheetApps); 
+        appendPre(teamMembers[2].getChapterList()[0].getCity());
+        document.getElementById("test-p").innerHTML = teamMembers;
+        
+        // updateTables();
+        // gapi.client.sheets.spreadsheets.values.get({
+        //     spreadsheetId: '1-sVr5PKZpI0DdJhuxc32CkSWxhSYtvW55okIFgsIaW0',
+        //     range: 'Applications!A2:H6',
+        // }).then(function(response) {
+        //     var range = response.result;
+        //     if (range.values.length > 0) {
+        //     // document.getElementById("paragraph").innerHTML = "heyyy";
+        //     //appendPre('Name, Major:');
+        //     for (i = 0; i < range.values.length; i++) {
+        //         var row = range.values[i];
+        //         // Print columns A and E, which correspond to indices 0 and 4.
+        //         //appendPre(row[0] + ', ' + row[4]);
+        //     }
+        //     } else {
+        //     appendPre('No data found.');
+        //     }
+        // }, function(response) {
+        //     appendPre('Error: ' + response.result.error.message);
+        // });
     }
 
-    function findNumSheetApps()
+    async function findNumSheetApps()
     {
-        gapi.client.sheets.spreadsheets.values.get({
+        // let num = 4;
+        await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: '1-sVr5PKZpI0DdJhuxc32CkSWxhSYtvW55okIFgsIaW0',
             range: 'TeamInfo!B7:B7',
         }).then(function(response) {
             var range = response.result;
             if (range.values.length > 0) {
                 numSheetApps = parseInt(range.values[0][0]) - 1;
+                appendPre("1st place: " + numSheetApps);
+                
             }
         }, function(response) {
-            appendPre('Error: ' + response.result.error.message);
+            appendPre('Error in findNumSheetApps: ' + response.result.error.message);
         });
+        return numSheetApps;
+        
+    }
+    
+
+    async function updateLocalStorage(endRow)
+    {
+      // appendPre("hi again:" + numSheetApps);
+      let startingRow = numSynced + 2;
+      let endingRow = endRow + 1;
+      // appendPre(endingRow.toString());
+      if(startingRow < endingRow)
+      {
+        
+        await gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: '1-sVr5PKZpI0DdJhuxc32CkSWxhSYtvW55okIFgsIaW0',
+            range: 'Applications!B' + startingRow.toString() + ':H' + endingRow.toString(),
+        }).then(function(response) {
+            var range = response.result;
+            if (range.values.length > 0) {
+                let team = JSON.parse(window.localStorage.getItem("team"));
+                for(r = 0; r < range.values.length; r++)
+                {
+    
+                  let currentChapter = new Chapter(range.values[r][0], range.values[r][1], 
+                  range.values[r][2], range.values[r][3], range.values[r][4], range.values[r][5]);
+                  //get the ID number of the assigned member:
+                  let memberNumber = parseInt(range.values[r][6]);
+
+                  //check if the member has been created:
+                  if(teamMembers[memberNumber - 1] == null)
+                  {
+                    let currentMember = new TeamMember(team[memberNumber - 1].name, team[memberNumber - 1].email);
+                    teamMembers[memberNumber - 1] = currentMember;
+                  }
+                  teamMembers[memberNumber - 1].addChapter(currentChapter);
+              
+                }
+
+                //update local storage w new team member and chapter info
+                
+                for(i = 0; i<6; i++)
+                {
+                  if(teamMembers[i] == null)
+                  {
+                    let newMember = new TeamMember(team[i].name, team[i].email);
+                    teamMembers[i] = newMember;
+                    
+                  }
+                  
+                }
+                window.localStorage.setItem('team', JSON.stringify(teamMembers));
+            }
+        }, function(response) {
+            appendPre('Error in findNumSheetApps: ' + response.result.error.message);
+        });
+      }
+      
     }
 
     function testFunction()
