@@ -51,7 +51,7 @@ class Chapter {
     }
 }
 
-//GLobal variables
+//Global variables
 //team members array
 var teamMembers = [null, null, null, null, null, null];
 
@@ -189,9 +189,10 @@ function appendPre(message) {
     numSheetApps = await findNumSheetApps();
     await updateLocalStorage(numSheetApps); 
     // appendPre(teamMembers[2].getChapterList()[0].getCity());
-    document.getElementById("test-p").innerHTML = "test 2: " + teamMembers[2].getChapterList()[0].getCity();
+    // document.getElementById("test-p").innerHTML = teamMembers[2].getChapterList()[0].getCity();
     
-    // updateTables();
+    
+    /*updateTables();
     // gapi.client.sheets.spreadsheets.values.get({
     //     spreadsheetId: '1-sVr5PKZpI0DdJhuxc32CkSWxhSYtvW55okIFgsIaW0',
     //     range: 'Applications!A2:H6',
@@ -210,7 +211,7 @@ function appendPre(message) {
     //     }
     // }, function(response) {
     //     appendPre('Error: ' + response.result.error.message);
-    // });
+    // }); */
 }
 
 async function findNumSheetApps()

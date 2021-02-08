@@ -2,12 +2,11 @@ html{
     width: 100%;
     text-align: center;
     height: 100%;
-    color: blue;
+    /* color: blue; */
 }
 
-.headingAboveTable
+h4
 {
-    color: green;
     margin-bottom: 0;
 }
 
