@@ -312,7 +312,7 @@
         numSheetApps = await findNumSheetApps();
         await updateLocalStorage(numSheetApps); 
         appendPre(teamMembers[2].getChapterList()[0].getCity());
-        document.getElementById("test-p").innerHTML = teamMembers;
+        document.getElementById("test-p").innerHTML = teamMembers[2].getChapterList()[0].getCity();
         
         // updateTables();
         // gapi.client.sheets.spreadsheets.values.get({
