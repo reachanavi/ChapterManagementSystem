@@ -2,6 +2,13 @@ html{
     width: 100%;
     text-align: center;
     height: 100%;
+    color: blue;
+}
+
+.headingAboveTable
+{
+    color: green;
+    margin-bottom: 0;
 }
 
 #teamTables
@@ -12,7 +19,7 @@ html{
     overflow: hidden;
 }
 
-#tablesRow1, #tablesRow2
+#tablesRow1, #tablesRow2, #tablesRow3
 {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -49,4 +56,7 @@ html{
 {
     width: 35%
 }
+
+/* reduces margin around headings above each table */
+
 
