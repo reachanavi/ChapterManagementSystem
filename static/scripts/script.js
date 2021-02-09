@@ -30,7 +30,7 @@ class TeamMember {
 }
 
 class Chapter {
-    constructor(leaderName, leaderEmail, school, city, description, support)
+    constructor(leaderName, leaderEmail, school, city, description, support, id)
     {
     this.leaderName = leaderName;
     this.leaderEmail = leaderEmail;
@@ -39,6 +39,7 @@ class Chapter {
     this.description = description;
     this.support = support;
     this.status = 0;
+    this.chapterID = id;
     // this.teamMember = teamMember;
     }
     getCity()
@@ -53,6 +54,11 @@ class Chapter {
     updateStatus(newStatus)
     {
         this.status = newStatus;
+    }
+
+    getChapterID()
+    {
+        return this.chapterID;
     }
 }
 
@@ -189,6 +195,7 @@ function appendPre(message) {
  * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  */
     async function sync() {
+    // numSynced = 0;
     // appendPre("hello");
     // numSheetApps = findNumSheetApps();
     numSheetApps = await findNumSheetApps();
@@ -284,48 +291,49 @@ async function updateLocalStorage(endRow)
     if(startingRow <= endingRow)
     {
     
-    await gapi.client.sheets.spreadsheets.values.get({
-        spreadsheetId: '1-sVr5PKZpI0DdJhuxc32CkSWxhSYtvW55okIFgsIaW0',
-        range: 'Applications!B' + startingRow.toString() + ':H' + endingRow.toString(),
-    }).then(function(response) {
-        var range = response.result;
-        if (range.values.length > 0) {
-            let team = JSON.parse(window.localStorage.getItem("team"));
-            for(r = 0; r < range.values.length; r++)
-            {
-
-                let currentChapter = new Chapter(range.values[r][0], range.values[r][1], 
-                range.values[r][2], range.values[r][3], range.values[r][4], range.values[r][5]);
-                //get the ID number of the assigned member:
-                let memberNumber = parseInt(range.values[r][6]);
-
-                //check if the member has been created:
-                if(teamMembers[memberNumber - 1] == null)
+        await gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: '1-sVr5PKZpI0DdJhuxc32CkSWxhSYtvW55okIFgsIaW0',
+            range: 'Applications!B' + startingRow.toString() + ':H' + endingRow.toString(),
+        }).then(function(response) {
+            var range = response.result;
+            if (range.values.length > 0) {
+                let team = JSON.parse(window.localStorage.getItem("team"));
+                for(r = 0; r < range.values.length; r++)
                 {
-                let currentMember = new TeamMember(team[memberNumber - 1].name, team[memberNumber - 1].email);
-                teamMembers[memberNumber - 1] = currentMember;
-                }
-                teamMembers[memberNumber - 1].addChapter(currentChapter);
-            
-            }
 
-            //update local storage w new team member and chapter info
-            
-            for(i = 0; i<6; i++)
-            {
-                if(teamMembers[i] == null)
-                {
-                let newMember = new TeamMember(team[i].name, team[i].email);
-                teamMembers[i] = newMember;
+                    let currentChapter = new Chapter(range.values[r][0], range.values[r][1], 
+                    range.values[r][2], range.values[r][3], range.values[r][4], range.values[r][5],
+                    numSynced + 1 + r);
+                    //get the ID number of the assigned member:
+                    let memberNumber = parseInt(range.values[r][6]);
+
+                    //check if the member has been created:
+                    if(teamMembers[memberNumber - 1] == null)
+                    {
+                        let currentMember = new TeamMember(team[memberNumber - 1].name, team[memberNumber - 1].email);
+                        teamMembers[memberNumber - 1] = currentMember;
+                    }
+                    teamMembers[memberNumber - 1].addChapter(currentChapter);
                 
                 }
+
+                //update local storage w new team member and chapter info
                 
+                for(i = 0; i<6; i++)
+                {
+                    if(teamMembers[i] == null)
+                    {
+                    let newMember = new TeamMember(team[i].name, team[i].email);
+                    teamMembers[i] = newMember;
+                    
+                    }
+                    
+                }
+                window.localStorage.setItem('team', JSON.stringify(teamMembers));
             }
-            window.localStorage.setItem('team', JSON.stringify(teamMembers));
-        }
-    }, function(response) {
-        appendPre('Error in findNumSheetApps: ' + response.result.error.message);
-    });
+        }, function(response) {
+            appendPre('Error in findNumSheetApps: ' + response.result.error.message);
+        });
     }
     
 }
@@ -334,4 +342,5 @@ function testFunction()
 {
     appendPre("Synced chapters: " + numSynced);
     appendPre("Total apps on sheet: " + numSheetApps);
+    appendPre("Chapter ID of 2: " + teamMembers[2].getChapterList()[0].getChapterID());
 }
