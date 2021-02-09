@@ -27,28 +27,32 @@ class TeamMember {
     {
         this.chapters.push(chapter);
     }
+
+    
 }
 
 class Chapter {
     constructor(leaderName, leaderEmail, school, city, description, support, id)
     {
-    this.leaderName = leaderName;
-    this.leaderEmail = leaderEmail;
-    this.school = school;
-    this.city = city;
-    this.description = description;
-    this.support = support;
-    this.status = 0;
-    this.chapterID = id;
-    // this.teamMember = teamMember;
+        this.leaderName = leaderName;
+        this.leaderEmail = leaderEmail;
+        this.school = school;
+        this.city = city;
+        this.description = description;
+        this.support = support;
+        this.status = 0;
+        this.chapterID = id;
+        this.teamMemberID = 0;
     }
+
     getCity()
     {
-    return this.city;
+        return this.city;
     }
+
     getStatus()
     {
-    return this.status;
+        return this.status;
     }
 
     updateStatus(newStatus)
@@ -59,6 +63,11 @@ class Chapter {
     getChapterID()
     {
         return this.chapterID;
+    }
+
+    setTeamMember(id)
+    {
+        this.teamMemberID = id;
     }
 }
 
@@ -313,6 +322,7 @@ async function updateLocalStorage(endRow)
                         let currentMember = new TeamMember(team[memberNumber - 1].name, team[memberNumber - 1].email);
                         teamMembers[memberNumber - 1] = currentMember;
                     }
+                    currentChapter.setTeamMember(memberNumber);
                     teamMembers[memberNumber - 1].addChapter(currentChapter);
                 
                 }
