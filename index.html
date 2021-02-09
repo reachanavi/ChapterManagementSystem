@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="../static/styles/styles.css">
+    <link rel="stylesheet" href="\static\styles\styles.css">
     <title>Google Sheets API Quickstart</title>
     <meta charset="utf-8" />
   </head>
@@ -11,7 +11,13 @@
     <p id = "test-p">Initial Content</p>
     <button id="authorize_button" style="display: none;">Authorize</button>
     <button id="signout_button" style="display: none;">Sign Out</button>
-    <button id = "testButton" onClick = "sync()">Sync Applications</button>
+    <table id = "buttonsTable">
+      <tr id = "buttonsTable-tr">
+        <td class = "buttonsTable-td"><button id = "syncButton" onClick = "sync()">Sync Applications</button></td>
+        <td class = "buttonsTable-td"><button id = "testButton" onClick = "testFunction()">Test Button</button></td>
+      </tr>
+    </table>
+    
 
     <div id = "teamTables"> 
       <div id = "tablesRow1">
