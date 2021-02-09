@@ -195,7 +195,7 @@ function appendPre(message) {
     await updateLocalStorage(numSheetApps);
     // appendPre(teamMembers[2].getChapterList()[0].getCity());
     // document.getElementById("test-p").innerHTML = teamMembers[2].getChapterList()[0].getCity();
-
+    appendPre("Test: " + teamMembers[4].getChapterList()[teamMembers[4].getChapterList().length - 1].getCity());
     //update tables:
     for(i = 0; i<6; i++)
     {
@@ -230,6 +230,7 @@ function appendPre(message) {
             }
         }
     }
+    numSynced = numSheetApps;
     
     /*updateTables();
     // gapi.client.sheets.spreadsheets.values.get({
@@ -258,12 +259,12 @@ async function findNumSheetApps()
     // let num = 4;
     await gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: '1-sVr5PKZpI0DdJhuxc32CkSWxhSYtvW55okIFgsIaW0',
-        range: 'TeamInfo!B7:B7',
+        range: 'TeamInfo!B8:B8',
     }).then(function(response) {
         var range = response.result;
         if (range.values.length > 0) {
             numSheetApps = parseInt(range.values[0][0]) - 1;
-            appendPre("1st place: " + numSheetApps);
+            appendPre("NumSheetApps: " + numSheetApps);
             
         }
     }, function(response) {
@@ -280,7 +281,7 @@ async function updateLocalStorage(endRow)
     let startingRow = numSynced + 2;
     let endingRow = endRow + 1;
     // appendPre(endingRow.toString());
-    if(startingRow < endingRow)
+    if(startingRow <= endingRow)
     {
     
     await gapi.client.sheets.spreadsheets.values.get({
