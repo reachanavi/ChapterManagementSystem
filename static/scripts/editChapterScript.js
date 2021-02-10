@@ -143,7 +143,7 @@ function onStart()
 function loadForm()
 {
     document.getElementById("fname").value = chapter.getLeaderName();
-    document.getElementById("heading").style.color = "red";
+    document.getElementById("heading").style.color = "blue";
 }
 
 
