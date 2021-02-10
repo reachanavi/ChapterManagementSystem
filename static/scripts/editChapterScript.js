@@ -1,3 +1,6 @@
+//python server terminal line: python -m SimpleHTTPServer 8000
+//browser: http://localhost:8000
+// ctr C to end server
 
 //CLASSES:
 class TeamMember {
@@ -68,7 +71,7 @@ class Chapter {
 
     getSupport()
     {
-        return this.support();
+        return this.support;
     }
 
     getStatus()
@@ -143,6 +146,35 @@ function onStart()
 function loadForm()
 {
     document.getElementById("fname").value = chapter.getLeaderName();
+    document.getElementById("femail").value = chapter.getLeaderEmail();
+    document.getElementById("fschool").value = chapter.getSchool();
+    document.getElementById("fdescription").innerHTML = chapter.getDescription();
+    document.getElementById("fsupport").innerHTML = chapter.getSupport();
+
+    if(chapter.getStatus() == 0)
+    {
+        document.getElementById("fstatus0").selected = true;
+    }else if(chapter.getStatus() == 1)
+    {
+        document.getElementById("fstatus1").selected = true;
+    }else if(chapter.getStatus() == 2)
+    {
+        document.getElementById("fstatus2").selected = true;
+    }else if(chapter.getStatus() == 3)
+    {
+        document.getElementById("fstatus3").selected = true;
+    }
+    
+    for(i = 1; i<7; i++)
+    {
+        let idStr = "fteamMember" + i;
+        document.getElementById(idStr).innerHTML = teamMembers[i-1].getName();
+        if(chapter.getTeamMemberID() == i)
+        {
+            document.getElementById(idStr).selected = true;
+        }
+    }
+    
     document.getElementById("heading").style.color = "blue";
 }
 
