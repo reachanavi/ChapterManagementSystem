@@ -45,9 +45,34 @@ class Chapter {
         this.teamMemberID = 0;
     }
 
+    getLeaderName()
+    {
+        return this.leaderName;
+    }
+
+    getLeaderEmail()
+    {
+        return this.leaderEmail;
+    }
+
+    getSchool()
+    {
+        return this.school;
+    }
+
     getCity()
     {
         return this.city;
+    }
+
+    getDescription()
+    {
+        return this.description;
+    }
+
+    getSupport()
+    {
+        return this.support();
     }
 
     getStatus()
@@ -55,15 +80,21 @@ class Chapter {
         return this.status;
     }
 
-    updateStatus(newStatus)
-    {
-        this.status = newStatus;
-    }
-
     getChapterID()
     {
         return this.chapterID;
     }
+
+    getTeamMemberID()
+    {
+        return this.teamMemberID;
+    }
+
+    updateStatus(newStatus)
+    {
+        this.status = newStatus;
+    }
+    
 
     setTeamMember(id)
     {
