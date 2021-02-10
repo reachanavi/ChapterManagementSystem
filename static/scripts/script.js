@@ -348,6 +348,17 @@ async function updateLocalStorage(endRow)
     
 }
 
+function goToEdit(id)
+{
+    let member = parseInt(id.substring(7, 8));
+    appendPre("member number: " + id);
+    let chapterIndex = parseInt(id.substring(8, 9));
+    let currentChapter = teamMembers[member - 1].getChapterList()[chapterIndex - 1];
+    window.sessionStorage.setItem("currentChapterEdit", JSON.stringify(currentChapter));
+    appendPre(window.sessionStorage.getItem("currentChapterEdit"));
+    window.location.href = "editChapter.html";
+}
+
 function testFunction()
 {
     appendPre("Synced chapters: " + numSynced);
