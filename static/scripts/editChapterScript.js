@@ -41,9 +41,34 @@ class Chapter {
         this.teamMemberID = 0;
     }
 
+    getLeaderName()
+    {
+        return this.leaderName;
+    }
+
+    getLeaderEmail()
+    {
+        return this.leaderEmail;
+    }
+
+    getSchool()
+    {
+        return this.school;
+    }
+
     getCity()
     {
         return this.city;
+    }
+
+    getDescription()
+    {
+        return this.description;
+    }
+
+    getSupport()
+    {
+        return this.support();
     }
 
     getStatus()
@@ -51,15 +76,21 @@ class Chapter {
         return this.status;
     }
 
-    updateStatus(newStatus)
-    {
-        this.status = newStatus;
-    }
-
     getChapterID()
     {
         return this.chapterID;
     }
+
+    getTeamMemberID()
+    {
+        return this.teamMemberID;
+    }
+
+    updateStatus(newStatus)
+    {
+        this.status = newStatus;
+    }
+    
 
     setTeamMember(id)
     {
@@ -72,6 +103,7 @@ var chapter = null;
 var teamMembers = [null, null, null, null, null, null];
 
 onStart();
+loadForm();
 
 
 //When the page loads:
@@ -106,6 +138,12 @@ function onStart()
     }
 
 
+}
+
+function loadForm()
+{
+    document.getElementById("fname").value = chapter.getLeaderName();
+    document.getElementById("heading").style.color = "red";
 }
 
 
