@@ -72,7 +72,7 @@ class Chapter {
 
     getSupport()
     {
-        return this.support();
+        return this.support;
     }
 
     getStatus()
