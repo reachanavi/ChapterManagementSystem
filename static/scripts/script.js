@@ -5,12 +5,12 @@
 
 //CLASSES:
 class TeamMember {
-    constructor(name, email, idNumber)
+    constructor(name, email, idNumber, chaptersArr)
     {
         this.name = name;
         this.email = email;
         this.idNumber = idNumber
-        this.chapters = new Array();
+        this.chapters = chaptersArr;
     }
 
     getChapterList()
@@ -32,7 +32,7 @@ class TeamMember {
 }
 
 class Chapter {
-    constructor(leaderName, leaderEmail, school, city, description, support, id)
+    constructor(leaderName, leaderEmail, school, city, description, support, status, id)
     {
         this.leaderName = leaderName;
         this.leaderEmail = leaderEmail;
@@ -40,7 +40,7 @@ class Chapter {
         this.city = city;
         this.description = description;
         this.support = support;
-        this.status = 0;
+        this.status = status;
         this.chapterID = id;
         this.teamMemberID = 0;
     }
@@ -94,15 +94,15 @@ if(window.localStorage.getItem("teamMembersCreated") == null)
 {
     // testMember = new TeamMember("Test Member Name", "test@email.com");  
     // testChapter = new Chapter("leader name", "email@email", "school name", "sample city", 
-    // "sample description", "sample support");
+    // "sample description", "sample support", 0, 0);
     // testMember.addChapter(testChapter);
     var team = new Array();
-    team.push(new TeamMember("Member Name 1", "member1@email.com", 1));
-    team.push(new TeamMember("Member Name 2", "member2@email.com", 2));
-    team.push(new TeamMember("Member Name 3", "member3@email.com", 3));
-    team.push(new TeamMember("Member Name 4", "member4@email.com", 4));
-    team.push(new TeamMember("Member Name 5", "member5@email.com", 5));
-    team.push(new TeamMember("Member Name 6", "member6@email.com", 6));
+    team.push(new TeamMember("Member Name 1", "member1@email.com", 1, new Array()));
+    team.push(new TeamMember("Member Name 2", "member2@email.com", 2, new Array()));
+    team.push(new TeamMember("Member Name 3", "member3@email.com", 3, new Array()));
+    team.push(new TeamMember("Member Name 4", "member4@email.com", 4, new Array()));
+    team.push(new TeamMember("Member Name 5", "member5@email.com", 5, new Array()));
+    team.push(new TeamMember("Member Name 6", "member6@email.com", 6, new Array()));
     window.localStorage.setItem('team', JSON.stringify(team));
     window.localStorage.setItem("teamMembersCreated", "true");
 
@@ -247,6 +247,7 @@ function appendPre(message) {
         }
     }
     numSynced = numSheetApps;
+    window.localStorage.setItem("numSyncedStr", numSynced);
     
     /*updateTables();
     // gapi.client.sheets.spreadsheets.values.get({
@@ -296,7 +297,30 @@ async function updateLocalStorage(endRow)
     // appendPre("hi again:" + numSheetApps);
     let startingRow = numSynced + 2;
     let endingRow = endRow + 1;
-    // appendPre(endingRow.toString());
+    appendPre("starting row: " + startingRow.toString());
+    let team = JSON.parse(window.localStorage.getItem("team"));
+    let i = 0;
+    for(i = 0; i<6; i++)
+    {
+        teamMembers[i] = new TeamMember(team[i].name, team[i].email, team[i].idNumber, new Array());
+        // appendPre("Member created: " + teamMembers[i].getName());
+        // appendPre("Member check: " + teamMembers[i].getName());
+        if(team[i].chapters.length > 0)
+        {
+            for(j = 0; j<team[i].chapters.length; j++)
+            {
+                let c = new Chapter(team[i].chapters[j].leaderName, team[i].chapters[j].leaderEmail, 
+                    team[i].chapters[j].school, team[i].chapters[j].city, team[i].chapters[j].description,
+                    team[i].chapters[j].support, parseInt(team[i].chapters[j].status), parseInt(team[i].chapters[j].chapterID));
+                
+                c.setTeamMember(i + 1);
+                appendPre("Member check: " + teamMembers[i].getName());
+                teamMembers[i].addChapter(c);
+            }
+        }
+        
+        
+    }
     if(startingRow <= endingRow)
     {
     
@@ -304,22 +328,27 @@ async function updateLocalStorage(endRow)
             spreadsheetId: '1-sVr5PKZpI0DdJhuxc32CkSWxhSYtvW55okIFgsIaW0',
             range: 'Applications!B' + startingRow.toString() + ':H' + endingRow.toString(),
         }).then(function(response) {
+            //First populate teamMembers with all data from local storage
+            
+
+            //Now add new chapters from the spreadsheet:
             var range = response.result;
             if (range.values.length > 0) {
-                let team = JSON.parse(window.localStorage.getItem("team"));
+                // let team = JSON.parse(window.localStorage.getItem("team"));
                 for(r = 0; r < range.values.length; r++)
                 {
 
                     let currentChapter = new Chapter(range.values[r][0], range.values[r][1], 
-                    range.values[r][2], range.values[r][3], range.values[r][4], range.values[r][5],
+                    range.values[r][2], range.values[r][3], range.values[r][4], range.values[r][5], 0,
                     numSynced + 1 + r);
+                    appendPre("Chapter added: " + range.values[r][0]);
                     //get the ID number of the assigned member:
                     let memberNumber = parseInt(range.values[r][6]);
 
                     //check if the member has been created:
                     if(teamMembers[memberNumber - 1] == null)
                     {
-                        let currentMember = new TeamMember(team[memberNumber - 1].name, team[memberNumber - 1].email);
+                        let currentMember = new TeamMember(team[memberNumber - 1].name, team[memberNumber - 1].email, memberNumber);
                         teamMembers[memberNumber - 1] = currentMember;
                     }
                     currentChapter.setTeamMember(memberNumber);
@@ -329,16 +358,17 @@ async function updateLocalStorage(endRow)
 
                 //update local storage w new team member and chapter info
                 
-                for(i = 0; i<6; i++)
-                {
-                    if(teamMembers[i] == null)
-                    {
-                    let newMember = new TeamMember(team[i].name, team[i].email);
-                    teamMembers[i] = newMember;
+                // for(i = 0; i<6; i++)
+                // {
+                //     if(teamMembers[i] == null)
+                //     {
+                //         let newMember = new TeamMember(team[i].name, team[i].email, i);
+                //         teamMembers[i] = newMember;
                     
-                    }
+                //     }
                     
-                }
+                // }
+
                 window.localStorage.setItem('team', JSON.stringify(teamMembers));
             }
         }, function(response) {
