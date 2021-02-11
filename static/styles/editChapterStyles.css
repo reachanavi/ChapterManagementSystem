@@ -17,4 +17,14 @@ form{
     margin-top: 5px;
     margin-bottom: 5px;
 }
+.buttonsTable{
+    text-align: center;
+}
+table, td, tr{
+    text-align: center;
+}
 
+table{
+    margin-left: auto;
+    margin-right: auto;
+}
