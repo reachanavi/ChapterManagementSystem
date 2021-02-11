@@ -6,9 +6,9 @@
     </head>
 
     <body>
-        <!-- <p id = "test-p">Hey</p> -->
+        <p id = "test-p">Hey</p>
         <h2 id = "heading"></h2>
-        <form id = "editForm">
+        <!-- <form id = "editForm"> -->
             <div class = "formElement">
                 <label for="fname">Leader Name:</label>
                 <input type="text" id="fname" name="fname" form = "editForm" value = "">
@@ -33,7 +33,7 @@
                 </textarea><br>
             </div>
             <div class = "formElement">
-                <label for="fsupport">Description:</label>
+                <label for="fsupport">Support Expected:</label>
                 <textarea name="fsupport" id = "fsupport" rows="5" cols="30">
                 </textarea><br>
             </div>
@@ -47,7 +47,7 @@
                 </select>
             </div>
             <div class = "formElement">
-                <label for="fteamMember">Status:</label>
+                <label for="fteamMember">Team Member:</label>
                 <select id="fteamMember" name="fteamMember">
                     <option id = "fteamMember1" value="1"></option>
                     <option id = "fteamMember2" value="2"></option>
@@ -57,7 +57,16 @@
                     <option id = "fteamMember6" value="6"></option>
                 </select>
             </div>
-        </form>
+            <div class = "buttonsTable">
+                <table>
+                    <tr>
+                        <td><button id = "fsave" onClick = "saveChanges()">Save Changes</button></td>
+                        <td><button id = "fcancel" onClick = "cancel()">Cancel</button></td>
+                    </tr>
+                </table>
+
+            </div>
+        <!-- </form> -->
         
         
     </body>
