@@ -90,11 +90,45 @@ class Chapter {
         return this.teamMemberID;
     }
 
+    setLeaderName(name)
+    {
+        this.leaderName = name;
+    }
+
+    setLeaderEmail(email)
+    {
+        this.leaderEmail = email;
+    }
+
+    setSchool(school)
+    {
+        this.school = school;
+    }
+
+    setCity(city)
+    {
+        this.city = city;
+    }
+
+    setDescription(description)
+    {
+        this.description = description;
+    }
+
+    setSupport(support)
+    {
+        this.support = support;
+    }
+
     updateStatus(newStatus)
     {
         this.status = newStatus;
     }
-    
+
+    setChapterID(id)
+    {
+        this.chapterID = id;
+    }
 
     setTeamMember(id)
     {
