@@ -2,9 +2,6 @@
 //browser: http://localhost:8000
 // ctr C to end server
 
-//test:
-// document.getElementById("test-p").innerHTML = "Test text";
-
 
 //CLASSES:
 class TeamMember {
@@ -213,13 +210,10 @@ function loadForm()
         }
     }
     
-    document.getElementById("heading").style.color = "blue";
 }
 
 function saveChanges()
 {
-    //test:
-    document.getElementById("test-p").innerHTML = "Test text";
 
     chapter.setLeaderName(document.getElementById("fname").value);
     chapter.setLeaderEmail(document.getElementById("femail").value);
@@ -259,8 +253,6 @@ function saveChanges()
 
     }
 
-    //test:
-    document.getElementById("test-p").innerHTML = "ran";
     //Update local storage:
     window.localStorage.setItem("team", JSON.stringify(teamMembers));
 

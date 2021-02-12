@@ -3,8 +3,7 @@
 // ctr C to end server
 //to do: update syncedChapters global variable and in local storage after syncing
 
-//test:
-appendPre("heyyyy ");
+
 
 //CLASSES:
 class TeamMember {
@@ -279,7 +278,7 @@ function appendPre(message) {
     await updateLocalStorage(numSheetApps);
     // appendPre(teamMembers[2].getChapterList()[0].getCity());
     // document.getElementById("test-p").innerHTML = teamMembers[2].getChapterList()[0].getCity();
-    appendPre("Test: " + teamMembers[4].getChapterList()[teamMembers[4].getChapterList().length - 1].getCity());
+    // appendPre("Test: " + teamMembers[4].getChapterList()[teamMembers[4].getChapterList().length - 1].getCity());
     //update tables:
     for(i = 0; i<6; i++)
     {
@@ -310,7 +309,7 @@ function appendPre(message) {
                 idString += c + 1;
                 document.getElementById(idString).innerHTML = statusStr;
                 
-                document.getElementById("test-p").style.color = "red";
+                // document.getElementById("test-p").style.color = "red";
             }
         }
     }
@@ -349,7 +348,7 @@ async function findNumSheetApps()
         var range = response.result;
         if (range.values.length > 0) {
             numSheetApps = parseInt(range.values[0][0]) - 1;
-            appendPre("NumSheetApps: " + numSheetApps);
+            // appendPre("NumSheetApps: " + numSheetApps);
             
         }
     }, function(response) {
@@ -365,7 +364,7 @@ async function updateLocalStorage(endRow)
     // appendPre("hi again:" + numSheetApps);
     let startingRow = numSynced + 2;
     let endingRow = endRow + 1;
-    appendPre("starting row: " + startingRow.toString());
+    // appendPre("starting row: " + startingRow.toString());
     let team = JSON.parse(window.localStorage.getItem("team"));
     let i = 0;
     for(i = 0; i<6; i++)
@@ -382,7 +381,7 @@ async function updateLocalStorage(endRow)
                     team[i].chapters[j].support, parseInt(team[i].chapters[j].status), parseInt(team[i].chapters[j].chapterID));
                 
                 c.setTeamMember(i + 1);
-                appendPre("Member check: " + teamMembers[i].getName());
+                // appendPre("Member check: " + teamMembers[i].getName());
                 teamMembers[i].addChapter(c);
             }
         }
@@ -409,7 +408,7 @@ async function updateLocalStorage(endRow)
                     let currentChapter = new Chapter(range.values[r][0], range.values[r][1], 
                     range.values[r][2], range.values[r][3], range.values[r][4], range.values[r][5], 0,
                     numSynced + 1 + r);
-                    appendPre("Chapter added: " + range.values[r][0]);
+                    // appendPre("Chapter added: " + range.values[r][0]);
                     //get the ID number of the assigned member:
                     let memberNumber = parseInt(range.values[r][6]);
 
@@ -460,7 +459,7 @@ function goToEdit(id)
 function goToViewDetails(id)
 {
     let member = parseInt(id.substring(8, 9));
-    appendPre("member number: " + member);
+    // appendPre("member number: " + member);
     let chapterIndex = parseInt(id.substring(9, 10));
     let currentChapter = teamMembers[member - 1].getChapterList()[chapterIndex - 1];
     window.sessionStorage.setItem("currentChapterView", JSON.stringify(currentChapter));
