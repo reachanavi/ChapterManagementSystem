@@ -69,14 +69,14 @@ h4
     width: 35%
 }
 
-.col3
+.col3, .col1
 {
     color: blue;
     text-decoration: underline;
     
 }
 
-.col3:hover{
+.col3:hover, .col1:hover{
     cursor: pointer;
 }
 /* reduces margin around headings above each table */
