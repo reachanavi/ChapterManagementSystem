@@ -236,7 +236,7 @@ function saveChanges()
         let oldMember = teamMembers[chapter.getTeamMemberID() - 1];
         for(i = 0; i < oldMember.getChapterList().length; i++)
         {
-            if(oldMember.getChapterList()[i].getChapterID == chapter.getChapterID)
+            if(oldMember.getChapterList()[i].getChapterID() == chapter.getChapterID())
             {
                 oldMember.getChapterList().splice(i, 1);
             }
