@@ -3,6 +3,9 @@
 // ctr C to end server
 //to do: update syncedChapters global variable and in local storage after syncing
 
+//test:
+appendPre("heyyyy ");
+
 //CLASSES:
 class TeamMember {
     constructor(name, email, idNumber, chaptersArr)
@@ -446,12 +449,23 @@ async function updateLocalStorage(endRow)
 function goToEdit(id)
 {
     let member = parseInt(id.substring(7, 8));
-    appendPre("member number: " + id);
+    // appendPre("member number: " + id);
     let chapterIndex = parseInt(id.substring(8, 9));
     let currentChapter = teamMembers[member - 1].getChapterList()[chapterIndex - 1];
     window.sessionStorage.setItem("currentChapterEdit", JSON.stringify(currentChapter));
     // appendPre(window.sessionStorage.getItem("currentChapterEdit"));
     window.location.href = "editChapter.html";
+}
+
+function goToViewDetails(id)
+{
+    let member = parseInt(id.substring(8, 9));
+    appendPre("member number: " + member);
+    let chapterIndex = parseInt(id.substring(9, 10));
+    let currentChapter = teamMembers[member - 1].getChapterList()[chapterIndex - 1];
+    window.sessionStorage.setItem("currentChapterView", JSON.stringify(currentChapter));
+    // appendPre(window.sessionStorage.getItem("currentChapterEdit"));
+    window.location.href = "viewDetails.html";
 }
 
 function testFunction()
