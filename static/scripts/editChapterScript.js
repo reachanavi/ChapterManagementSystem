@@ -274,7 +274,7 @@ function saveChanges()
 function cancel()
 {
     loadForm();
-    document.getElementById("test-p").innerHTML = "cancel clicked";
+    // document.getElementById("test-p").innerHTML = "cancel clicked";
 
     chapter = null;
     window.sessionStorage.setItem("currentChapterEdit", "");
