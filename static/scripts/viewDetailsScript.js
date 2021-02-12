@@ -31,3 +31,9 @@ function loadData()
     
 }
 
+function backToHome()
+{
+    chapterStr = null;
+    window.sessionStorage.setItem("currentChapterView", "");
+    window.location.href = "index.html";
+}
