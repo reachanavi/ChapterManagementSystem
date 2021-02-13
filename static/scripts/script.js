@@ -29,8 +29,6 @@ class TeamMember {
     {
         this.chapters.push(chapter);
     }
-
-    
 }
 
 class Chapter {
@@ -157,12 +155,9 @@ else
 var numSheetApps;
 
 //check whether team members have been created
+
 if(window.localStorage.getItem("teamMembersCreated") == null)
 {
-    // testMember = new TeamMember("Test Member Name", "test@email.com");  
-    // testChapter = new Chapter("leader name", "email@email", "school name", "sample city", 
-    // "sample description", "sample support", 0, 0);
-    // testMember.addChapter(testChapter);
     var team = new Array();
     team.push(new TeamMember("Member Name 1", "member1@email.com", 1, new Array()));
     team.push(new TeamMember("Member Name 2", "member2@email.com", 2, new Array()));
@@ -172,12 +167,6 @@ if(window.localStorage.getItem("teamMembersCreated") == null)
     team.push(new TeamMember("Member Name 6", "member6@email.com", 6, new Array()));
     window.localStorage.setItem('team', JSON.stringify(team));
     window.localStorage.setItem("teamMembersCreated", "true");
-
-    // var currentMembers = JSON.parse(window.localStorage.getItem("team"));
-    // document.getElementById("test-p").style.color = "red";
-    // document.getElementById("test-p").innerHTML = currentMembers[6].chapters[currentMembers[6].chapters.length - 1].city;
-    
-
 }
 
 
@@ -267,19 +256,13 @@ function appendPre(message) {
 }
 
 /**
- * Print the names and majors of students in a sample spreadsheet:
- * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+ * 
  */
     async function sync() {
-    // numSynced = 0;
-    // appendPre("hello");
-    // numSheetApps = findNumSheetApps();
+    
     numSheetApps = await findNumSheetApps();
     await updateLocalStorage(numSheetApps);
-    // appendPre(teamMembers[2].getChapterList()[0].getCity());
-    // document.getElementById("test-p").innerHTML = teamMembers[2].getChapterList()[0].getCity();
-    // appendPre("Test: " + teamMembers[4].getChapterList()[teamMembers[4].getChapterList().length - 1].getCity());
-    //update tables:
+    
     for(i = 0; i<6; i++)
     {
         let currentMember = teamMembers[i];
@@ -308,39 +291,17 @@ function appendPre(message) {
                 idString = "status" + (i + 1);
                 idString += c + 1;
                 document.getElementById(idString).innerHTML = statusStr;
-                
-                // document.getElementById("test-p").style.color = "red";
             }
         }
     }
     numSynced = numSheetApps;
     window.localStorage.setItem("numSyncedStr", numSynced);
     
-    /*updateTables();
-    // gapi.client.sheets.spreadsheets.values.get({
-    //     spreadsheetId: '1-sVr5PKZpI0DdJhuxc32CkSWxhSYtvW55okIFgsIaW0',
-    //     range: 'Applications!A2:H6',
-    // }).then(function(response) {
-    //     var range = response.result;
-    //     if (range.values.length > 0) {
-    //     // document.getElementById("paragraph").innerHTML = "heyyy";
-    //     //appendPre('Name, Major:');
-    //     for (i = 0; i < range.values.length; i++) {
-    //         var row = range.values[i];
-    //         // Print columns A and E, which correspond to indices 0 and 4.
-    //         //appendPre(row[0] + ', ' + row[4]);
-    //     }
-    //     } else {
-    //     appendPre('No data found.');
-    //     }
-    // }, function(response) {
-    //     appendPre('Error: ' + response.result.error.message);
-    // }); */
+    
 }
 
 async function findNumSheetApps()
 {
-    // let num = 4;
     await gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: '1-sVr5PKZpI0DdJhuxc32CkSWxhSYtvW55okIFgsIaW0',
         range: 'TeamInfo!B8:B8',
@@ -348,30 +309,23 @@ async function findNumSheetApps()
         var range = response.result;
         if (range.values.length > 0) {
             numSheetApps = parseInt(range.values[0][0]) - 1;
-            // appendPre("NumSheetApps: " + numSheetApps);
-            
         }
     }, function(response) {
         appendPre('Error in findNumSheetApps: ' + response.result.error.message);
     });
     return numSheetApps;
-    
 }
-
+L
 
 async function updateLocalStorage(endRow)
 {
-    // appendPre("hi again:" + numSheetApps);
     let startingRow = numSynced + 2;
     let endingRow = endRow + 1;
-    // appendPre("starting row: " + startingRow.toString());
     let team = JSON.parse(window.localStorage.getItem("team"));
     let i = 0;
     for(i = 0; i<6; i++)
     {
         teamMembers[i] = new TeamMember(team[i].name, team[i].email, team[i].idNumber, new Array());
-        // appendPre("Member created: " + teamMembers[i].getName());
-        // appendPre("Member check: " + teamMembers[i].getName());
         if(team[i].chapters.length > 0)
         {
             for(j = 0; j<team[i].chapters.length; j++)
@@ -379,40 +333,26 @@ async function updateLocalStorage(endRow)
                 let c = new Chapter(team[i].chapters[j].leaderName, team[i].chapters[j].leaderEmail, 
                     team[i].chapters[j].school, team[i].chapters[j].city, team[i].chapters[j].description,
                     team[i].chapters[j].support, parseInt(team[i].chapters[j].status), parseInt(team[i].chapters[j].chapterID));
-                
                 c.setTeamMember(i + 1);
-                // appendPre("Member check: " + teamMembers[i].getName());
                 teamMembers[i].addChapter(c);
             }
         }
-        
-        
     }
+
     if(startingRow <= endingRow)
     {
-    
         await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: '1-sVr5PKZpI0DdJhuxc32CkSWxhSYtvW55okIFgsIaW0',
             range: 'Applications!B' + startingRow.toString() + ':H' + endingRow.toString(),
         }).then(function(response) {
-            //First populate teamMembers with all data from local storage
-            
-
-            //Now add new chapters from the spreadsheet:
             var range = response.result;
             if (range.values.length > 0) {
-                // let team = JSON.parse(window.localStorage.getItem("team"));
                 for(r = 0; r < range.values.length; r++)
                 {
-
                     let currentChapter = new Chapter(range.values[r][0], range.values[r][1], 
                     range.values[r][2], range.values[r][3], range.values[r][4], range.values[r][5], 0,
                     numSynced + 1 + r);
-                    // appendPre("Chapter added: " + range.values[r][0]);
-                    //get the ID number of the assigned member:
                     let memberNumber = parseInt(range.values[r][6]);
-
-                    //check if the member has been created:
                     if(teamMembers[memberNumber - 1] == null)
                     {
                         let currentMember = new TeamMember(team[memberNumber - 1].name, team[memberNumber - 1].email, memberNumber);
@@ -422,20 +362,6 @@ async function updateLocalStorage(endRow)
                     teamMembers[memberNumber - 1].addChapter(currentChapter);
                 
                 }
-
-                //update local storage w new team member and chapter info
-                
-                // for(i = 0; i<6; i++)
-                // {
-                //     if(teamMembers[i] == null)
-                //     {
-                //         let newMember = new TeamMember(team[i].name, team[i].email, i);
-                //         teamMembers[i] = newMember;
-                    
-                //     }
-                    
-                // }
-
                 window.localStorage.setItem('team', JSON.stringify(teamMembers));
             }
         }, function(response) {
@@ -448,22 +374,18 @@ async function updateLocalStorage(endRow)
 function goToEdit(id)
 {
     let member = parseInt(id.substring(7, 8));
-    // appendPre("member number: " + id);
     let chapterIndex = parseInt(id.substring(8, 9));
     let currentChapter = teamMembers[member - 1].getChapterList()[chapterIndex - 1];
     window.sessionStorage.setItem("currentChapterEdit", JSON.stringify(currentChapter));
-    // appendPre(window.sessionStorage.getItem("currentChapterEdit"));
     window.location.href = "editChapter.html";
 }
 
 function goToViewDetails(id)
 {
     let member = parseInt(id.substring(8, 9));
-    // appendPre("member number: " + member);
     let chapterIndex = parseInt(id.substring(9, 10));
     let currentChapter = teamMembers[member - 1].getChapterList()[chapterIndex - 1];
     window.sessionStorage.setItem("currentChapterView", JSON.stringify(currentChapter));
-    // appendPre(window.sessionStorage.getItem("currentChapterEdit"));
     window.location.href = "viewDetails.html";
 }
 

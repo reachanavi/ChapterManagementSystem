@@ -147,7 +147,6 @@ loadForm();
 //When the page loads:
 function onStart()
 {
-    //Use the session storage to find the chapter the page is currently editing and store it in a Chapter object
     let chapterStr = JSON.parse(window.sessionStorage.getItem("currentChapterEdit"));
     chapter = new Chapter(chapterStr.leaderName, chapterStr.leaderEmail, chapterStr.school, chapterStr.city, 
         chapterStr.description, chapterStr.support, parseInt(chapterStr.status), parseInt(chapterStr.chapterID));
@@ -156,6 +155,7 @@ function onStart()
 
 
     //Fetch all the team chapters info from localStorage
+
     let team = JSON.parse(window.localStorage.getItem("team"));
     for(i = 0; i<6; i++)
     {
@@ -185,7 +185,6 @@ function loadForm()
     document.getElementById("fschool").value = chapter.getSchool();
     document.getElementById("fdescription").innerHTML = chapter.getDescription();
     document.getElementById("fsupport").innerHTML = chapter.getSupport();
-
     if(chapter.getStatus() == 0)
     {
         document.getElementById("fstatus0").selected = true;
@@ -199,7 +198,7 @@ function loadForm()
     {
         document.getElementById("fstatus3").selected = true;
     }
-    
+
     for(i = 1; i<7; i++)
     {
         let idStr = "fteamMember" + i;
