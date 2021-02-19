@@ -371,6 +371,8 @@ async function updateLocalStorage(endRow)
     
 }
 
+
+
 function goToEdit(id)
 {
     let member = parseInt(id.substring(7, 8));

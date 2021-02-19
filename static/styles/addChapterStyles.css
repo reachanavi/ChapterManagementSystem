@@ -1,0 +1,30 @@
+html{
+    width: 100%;
+    text-align: center;
+    height: 100%;
+    background-color: white;
+}
+
+form{
+    text-align: center;
+    /* width: 50%; */
+    /* margin-left: 50%; */
+}
+
+.formElement
+{
+    /* text-align: left; */
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.buttonsTable{
+    text-align: center;
+}
+table, td, tr{
+    text-align: center;
+}
+
+table{
+    margin-left: auto;
+    margin-right: auto;
+}
