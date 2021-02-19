@@ -151,6 +151,16 @@ else
     numSynced = parseInt(window.localStorage.getItem("numSyncedStr"));
 }
 
+var numChapters = 0;
+if(window.localStorage.getItem("numChapters") == null)
+{
+    window.localStorage.setItem('numChapters', '0');
+}
+else
+{
+    numChapters = parseInt(window.localStorage.getItem("numChaptersStr"));
+}
+
 //keep track of how many total applications are on the spreadsheet
 var numSheetApps;
 
@@ -360,9 +370,12 @@ async function updateLocalStorage(endRow)
                     }
                     currentChapter.setTeamMember(memberNumber);
                     teamMembers[memberNumber - 1].addChapter(currentChapter);
+
+                    numChapters += 1;
                 
                 }
                 window.localStorage.setItem('team', JSON.stringify(teamMembers));
+                window.localStorage.setItem("numChaptersStr", numChapters);
             }
         }, function(response) {
             appendPre('Error in findNumSheetApps: ' + response.result.error.message);
@@ -389,6 +402,12 @@ function goToViewDetails(id)
     let currentChapter = teamMembers[member - 1].getChapterList()[chapterIndex - 1];
     window.sessionStorage.setItem("currentChapterView", JSON.stringify(currentChapter));
     window.location.href = "viewDetails.html";
+}
+
+function goToAddChapter()
+{
+    // window.sessionStorage.setItem("numChapters", numChapters);
+    window.location.href = "addChapter.html";
 }
 
 function testFunction()
