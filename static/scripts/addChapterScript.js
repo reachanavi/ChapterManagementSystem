@@ -137,7 +137,8 @@ class Chapter {
 }
 
 //Global Variables:
-var chapter = null;
+var numChapters = -1;
+// var chapter = null;
 var teamMembers = [null, null, null, null, null, null];
 
 onStart();
@@ -147,12 +148,9 @@ loadForm();
 //When the page loads:
 function onStart()
 {
-    
-    document.getElementById("heading").innerHTML = "Add a Chapter";
-
 
     //Fetch all the team chapters info from localStorage
-
+    numChapters = parseInt(window.localStorage.getItem("numChaptersStr"));
     let team = JSON.parse(window.localStorage.getItem("team"));
     for(i = 0; i<6; i++)
     {
@@ -177,34 +175,11 @@ function onStart()
 
 function loadForm()
 {
-    // document.getElementById("fname").value = chapter.getLeaderName();
-    // document.getElementById("femail").value = chapter.getLeaderEmail();
-    // document.getElementById("fschool").value = chapter.getSchool();
-    // document.getElementById("fdescription").innerHTML = chapter.getDescription();
-    // document.getElementById("fsupport").innerHTML = chapter.getSupport();
-    // if(chapter.getStatus() == 0)
-    // {
-    //     document.getElementById("fstatus0").selected = true;
-    // }else if(chapter.getStatus() == 1)
-    // {
-    //     document.getElementById("fstatus1").selected = true;
-    // }else if(chapter.getStatus() == 2)
-    // {
-    //     document.getElementById("fstatus2").selected = true;
-    // }else if(chapter.getStatus() == 3)
-    // {
-    //     document.getElementById("fstatus3").selected = true;
-    // }
-
-    // for(i = 1; i<7; i++)
-    // {
-    //     let idStr = "fteamMember" + i;
-    //     document.getElementById(idStr).innerHTML = teamMembers[i-1].getName();
-    //     if(chapter.getTeamMemberID() == i)
-    //     {
-    //         document.getElementById(idStr).selected = true;
-    //     }
-    // }
+    for(i = 1; i<7; i++)
+    {
+        let idStr = "fteamMember" + i;
+        document.getElementById(idStr).innerHTML = teamMembers[i-1].getName();
+    }
     
 }
 
@@ -259,13 +234,42 @@ function loadForm()
 
 // }
 
+function createChapter()
+{
+    let leaderName = document.getElementById("fname").value;
+    let leaderEmail = document.getElementById("femail").value;
+    let school = document.getElementById("fschool").value;
+    let city = document.getElementById("fcity").value;
+    let description = document.getElementById("fdescription").value;
+    let support = document.getElementById("fsupport").value;
+    let status = parseInt(document.getElementById("fstatus").value);
+    let chapterID = numChapters + 1;
+    let teamMemberID = parseInt(document.getElementById("fteamMember").value);
+
+    let newChapter = new Chapter(leaderName, leaderEmail, school, city, 
+        description, support, status, chapterID);
+    
+    //set team member and add chapter to team member's list
+    newChapter.setTeamMember(teamMemberID);
+    teamMembers[teamMemberID - 1].addChapter(newChapter);
+
+    //update local storage:
+    window.localStorage.setItem("team", JSON.stringify(teamMembers));
+
+    //set everything back
+    numChapters += 1;
+    window.localStorage.setItem("numChaptersStr", numChapters);
+    window.location.href = "index.html";
+
+}
+
 function cancel()
 {
     loadForm();
     // document.getElementById("test-p").innerHTML = "cancel clicked";
 
     // chapter = null;
-    window.sessionStorage.setItem("currentChapterEdit", "");
+    // window.sessionStorage.setItem("currentChapterEdit", "");
     window.location.href = "index.html";
 }
 
