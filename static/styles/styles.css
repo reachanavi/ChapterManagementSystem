@@ -7,8 +7,9 @@ html{
 
 #buttonsTable
 {
-    width: 50%;
-    margin-left: 25%;
+    width: 20%;
+    margin-left: 40%;
+    border: none;
 }
 #buttonsTable-tr
 {
@@ -16,6 +17,7 @@ html{
 }
 .buttonsTable-td{
     width: 33%;
+    border: none;
 }
 
 h4
