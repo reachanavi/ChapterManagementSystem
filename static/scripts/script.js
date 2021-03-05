@@ -142,6 +142,8 @@ var teamMembers = [null, null, null, null, null, null];
 
 //Keep track of how many chapters have already been synced
 var numSynced = 0;
+
+
 if(window.localStorage.getItem("numSyncedStr") == null)
 {
     window.localStorage.setItem('numSyncedStr', '0');
@@ -152,6 +154,8 @@ else
 }
 
 var numChapters = 0;
+
+
 if(window.localStorage.getItem("numChapters") == null)
 {
     window.localStorage.setItem('numChapters', '0');
@@ -165,6 +169,7 @@ else
 var numSheetApps;
 
 //check whether team members have been created
+
 
 if(window.localStorage.getItem("teamMembersCreated") == null)
 {
@@ -325,7 +330,7 @@ async function findNumSheetApps()
     });
     return numSheetApps;
 }
-L
+
 
 async function updateLocalStorage(endRow)
 {
